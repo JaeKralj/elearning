@@ -20,7 +20,7 @@ export default async function handler(
         validated.email,
         validated.password
       )
-      return res.status(200).json({ user: userCred.user })
+      return res.status(200).json(userCred.user)
     }
   } catch (error) {
     return res.status(500).json({ error })

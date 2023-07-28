@@ -12,5 +12,5 @@ export async function getVideo({
   if (!res.ok) {
     throw new Error('failed to fetch video')
   }
-  return res.json()
+  return await res.json()
 }

@@ -80,6 +80,7 @@ const fetchAllPlaylistItems = async (playlistId: string, maxResults = 50) => {
           height: item?.snippet?.thumbnails?.standard?.height,
         },
         videoId: item?.snippet?.resourceId?.videoId,
+        playlistId: playlistId,
         publishedAt: item?.snippet?.publishedAt,
       })
     })
