@@ -1,6 +1,7 @@
 import Form from '@/components/shared/auth/Form'
 
-export default function SignUp({}: propTypes) {
+export default function SignUp({ setNav }: propTypes) {
+  setNav(false)
   return (
     <Form
       heading='Register'
@@ -10,4 +11,6 @@ export default function SignUp({}: propTypes) {
   )
 }
 
-type propTypes = {}
+type propTypes = {
+  setNav: React.Dispatch<React.SetStateAction<boolean>>
+}

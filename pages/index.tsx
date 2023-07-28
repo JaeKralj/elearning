@@ -61,7 +61,7 @@ function LastPlayed() {
   const fetchLastPlayed = async () => {
     console.log(user)
     const res = await fetch(
-      'http://localhost:3000/api/last_played?uid=' + user.uid
+      'http://localhost:3000/api/last_played?uid=' + user?.uid
     )
     setVideo(await res.json())
   }
