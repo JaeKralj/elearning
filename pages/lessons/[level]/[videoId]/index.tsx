@@ -8,6 +8,7 @@ import { getVideo } from '@/pages/api/helpers/videos/getVideo'
 import { getVideos } from '@/pages/api/helpers/videos/getVideos'
 import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
+import YouTube from './YouTube'
 
 export async function getStaticProps({ params }: any) {
   const video = await getVideo({
@@ -43,17 +44,23 @@ export default function Lessons({ video, nextVideo }: propTypes) {
         <div>
           <div className='flex items-center'>
             <BackBtn />
-            <h1 className='mx-auto text-base md:text-xl font-medium'>
+            <h1 className='mx-auto text-base text-center md:text-xl font-medium'>
               {video.title}
             </h1>
           </div>
 
-          <iframe
+          <YouTube
+            playlistId={router.query.level as string}
+            videoId={video?.videoId}
+            key={0}
+          />
+          {/* <iframe
             src={`https://www.youtube.com/embed/${video?.videoId}`}
             title='YouTube video player'
             allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
             className='mx-auto my-5 w-[17.5rem] md:min-w-[560px] md:min-h-[19.6875rem] h-[10rem]'
-          ></iframe>
+            key={1}
+          ></iframe> */}
         </div>
         <Link
           href={

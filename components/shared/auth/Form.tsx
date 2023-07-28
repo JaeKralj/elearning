@@ -1,4 +1,5 @@
 'use client'
+import { useUser } from '@/components/AuthContext'
 import Button from '@/components/base/Button'
 import Input from '@/components/shared/auth/Input'
 import { Formik, Form as FormikForm } from 'formik'
@@ -7,6 +8,9 @@ import { useState } from 'react'
 import * as Yup from 'yup'
 
 export default function Form({ heading, altText, endpoint }: propTypes) {
+  // @ts-ignore
+  const { setUser } = useUser()
+
   const [error, setError] = useState(null)
 
   const handleSubmit = async (values: FormVals) => {
@@ -22,7 +26,9 @@ export default function Form({ heading, altText, endpoint }: propTypes) {
     if (!response.ok) {
       throw new Error('Network response was not ok')
     }
-
+    const user = await response.json()
+    if (user) localStorage.setItem('authId', user.uid)
+    setUser({ uid: user.uid })
     router.push('/')
   }
   const router = useRouter()

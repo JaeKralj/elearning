@@ -15,10 +15,8 @@ export default async function handler(
   const docSnap = await getDoc(docRef)
 
   if (docSnap.exists()) {
-    console.log('Document data:', docSnap.data())
     return res.status(200).json(docSnap.data().videos)
   } else {
-    // docSnap.data() will be undefined in this case
     console.log('No such document!')
     return res.status(404).json('no videos found')
   }

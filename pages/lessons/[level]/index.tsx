@@ -39,7 +39,10 @@ export default function Lessons({ videos }: { videos: any[] }) {
         <div className='grid grid-cols-2 text-center'>
           {videos &&
             videos.map((video: any, i: number) => (
-              <Link href={`/lessons/${router.query?.level}/${video?.videoId}`}>
+              <Link
+                href={`/lessons/${router.query?.level}/${video?.videoId}`}
+                key={i}
+              >
                 <Card>
                   <div>
                     <Image

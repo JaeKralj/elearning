@@ -1,7 +1,9 @@
+import { useUser } from '@/components/AuthContext'
 import Card from '@/components/base/Card'
 import CustomFragment from '@/components/base/CustomFragment'
 import { Akshar } from 'next/font/google'
 import Image from 'next/image'
+import { useEffect, useState } from 'react'
 
 const akshar = Akshar({ subsets: ['latin'] })
 
@@ -40,30 +42,56 @@ export default function Home() {
           {/* linear-gradient(218deg, #555355 0%, #030305 100%) */}
           <div className='bg-gradient-218 from-[#555355] to-[#030305] from-0% to-100% h-[9rem] aspect-square absolute top-14 z-20 left-16 rounded-full flex items-center justify-center text-center'>
             <p>
-              Weekly Study <br />5 hours
+              Static Weekly Study <br />5 hours
             </p>
           </div>
         </div>
         {/* last lesson */}
-        <Card className='!p-0 rounded-md w-[12.5rem]'>
-          <h2 className='text-base font-medium my-2'>Last Lesson</h2>
-          <Image
-            src='/images/rectangle6.png'
-            width={200}
-            height={200}
-            alt='lesson'
-          />
-          <div className='flex items-center justify-between'>
-            <p className='text-base font-medium'>Lesson Title</p>
-            <Image
-              src='/icons/bookmark.svg'
-              width={24}
-              height={24}
-              alt='bookmark'
-            />
-          </div>
-        </Card>
+        <LastPlayed />
       </div>
     </CustomFragment>
+  )
+}
+
+function LastPlayed() {
+  // @ts-ignore
+  const { user } = useUser()
+  const [video, setVideo] = useState(null)
+
+  const fetchLastPlayed = async () => {
+    console.log(user)
+    const res = await fetch(
+      'http://localhost:3000/api/last_played?uid=' + user.uid
+    )
+    setVideo(await res.json())
+  }
+
+  useEffect(() => {
+    fetchLastPlayed()
+  }, [])
+
+  return (
+    <Card className='!p-0 rounded-md w-[12.5rem]'>
+      <h2 className='text-base font-medium my-2 '>Last Lesson</h2>
+      <Image
+        // @ts-ignore
+        src={video?.thumbnail?.url}
+        // @ts-ignore
+        width={video?.thumbnail?.width}
+        // @ts-ignore
+        height={video?.thumbnail?.height}
+        sizes='(min-width: 768px) 20rem,'
+        // @ts-ignore
+        alt={video?.title}
+      />
+      <div className='flex items-center justify-between'>
+        <p className='text-xs font-medium md:text-sm'>
+          {
+            // @ts-ignore
+            video?.title
+          }
+        </p>
+      </div>
+    </Card>
   )
 }

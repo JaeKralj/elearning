@@ -1,6 +1,7 @@
 import { auth } from '@/firebase/config'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { NextApiRequest, NextApiResponse } from 'next'
+import { addUserToDB } from './helpers/auth/addUserToDB'
 import validateAuthInputs from './helpers/auth/validateInput'
 
 export default async function handler(
@@ -15,12 +16,17 @@ export default async function handler(
       if (validated.errors) {
         return res.status(400).json({ errors: validated.errors }) // bad request
       }
-      const userCred = await createUserWithEmailAndPassword(
+      const { user } = await createUserWithEmailAndPassword(
         auth,
         validated.email,
         validated.password
       )
-      return res.status(200).json({ user: userCred.user })
+
+      await addUserToDB({
+        userId: user.uid,
+        email: user.email as string,
+      })
+      return res.status(200).json(user)
     }
   } catch (error) {
     return res.status(500).json({ error })
