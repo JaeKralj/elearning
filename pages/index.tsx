@@ -1,6 +1,7 @@
 import { useUser } from '@/components/AuthContext'
 import Card from '@/components/base/Card'
 import CustomFragment from '@/components/base/CustomFragment'
+import { getGreeting } from '@/utils/getGreeting'
 import { Akshar } from 'next/font/google'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
@@ -8,12 +9,13 @@ import { useEffect, useState } from 'react'
 const akshar = Akshar({ subsets: ['latin'] })
 
 export default function Home() {
+  const greeting = getGreeting()
   return (
     <CustomFragment>
       <div className='flex min-h-screen flex-col p-8 text-grey-400'>
         <div className='flex items-center justify-between'>
-          <h1 className='text-grey-400 md:text-3xl text-lg font-semibold'>
-            Good Evening!
+          <h1 className='capitalize text-grey-400 md:text-3xl text-lg font-semibold'>
+            {greeting}
           </h1>
           <div className='border-primary-100 border-2 h-11 rounded-full aspect-square'>
             {/* add profile image here */}
