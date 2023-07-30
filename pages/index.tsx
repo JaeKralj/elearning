@@ -1,6 +1,6 @@
-import { useUser } from '@/components/AuthContext'
 import Card from '@/components/base/Card'
 import CustomFragment from '@/components/base/CustomFragment'
+import { useUser } from '@/contexts/AuthContext'
 import { getGreeting } from '@/utils/getGreeting'
 import { Akshar } from 'next/font/google'
 import Image from 'next/image'
@@ -55,13 +55,15 @@ export default function Home() {
   )
 }
 
+// TODO: add link to last lesson.
+// !NOTE: fix video object, add playlist id
 function LastPlayed() {
   // @ts-ignore
   const { user } = useUser()
+
   const [video, setVideo] = useState(null)
 
   const fetchLastPlayed = async () => {
-    console.log(user)
     const res = await fetch(
       'http://localhost:3000/api/last_played?uid=' + user?.uid
     )
@@ -79,9 +81,10 @@ function LastPlayed() {
         // @ts-ignore
         src={video?.thumbnail?.url}
         // @ts-ignore
-        width={video?.thumbnail?.width}
+        // width={video?.thumbnail?.width}
+        width={640}
         // @ts-ignore
-        height={video?.thumbnail?.height}
+        height={480}
         sizes='(min-width: 768px) 20rem,'
         // @ts-ignore
         alt={video?.title}
@@ -90,7 +93,7 @@ function LastPlayed() {
         <p className='text-xs font-medium md:text-sm'>
           {
             // @ts-ignore
-            video?.title
+            video?.title || 'Fetching...'
           }
         </p>
       </div>
