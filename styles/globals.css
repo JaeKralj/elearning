@@ -21,3 +21,7 @@ body {
   color: var(--foreground-rgb);
   background: var(--background);
 }
+
+#__next {
+  position: relative;
+}

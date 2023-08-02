@@ -12,9 +12,12 @@ export default async function handler(
   )
   const playlistId = searchParams.get('playlistId')
   const videoId = searchParams.get('videoId')
-  const videos = await getVideos(playlistId as string)
-
-  return res
-    .status(200)
-    .json(videos.find((video: any) => video.videoId === videoId))
+  try {
+    const videos = await getVideos(playlistId as string)
+    return res
+      .status(200)
+      .json(videos.find((video: any) => video.videoId === videoId))
+  } catch (error) {
+    return res.status(404).json('no videos found')
+  }
 }

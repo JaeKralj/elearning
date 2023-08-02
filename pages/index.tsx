@@ -62,12 +62,23 @@ function LastPlayed() {
   const { user } = useUser()
 
   const [video, setVideo] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const fetchLastPlayed = async () => {
+    setLoading(true)
     const res = await fetch(
       'http://localhost:3000/api/last_played?uid=' + user?.uid
     )
+    if (!res.ok && res.status !== 404) {
+      setLoading(false)
+      throw new Error("Couldn't get last played video")
+    }
+    if (res.status === 404) {
+      setVideo(null)
+      setLoading(false)
+    }
     setVideo(await res.json())
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -89,14 +100,20 @@ function LastPlayed() {
         // @ts-ignore
         alt={video?.title}
       />
-      <div className='flex items-center justify-between'>
-        <p className='text-xs font-medium md:text-sm'>
-          {
-            // @ts-ignore
-            video?.title || 'Fetching...'
-          }
-        </p>
-      </div>
+      {video && !loading ? (
+        <div className='flex items-center justify-between'>
+          <p className='text-xs font-medium md:text-sm'>
+            {
+              // @ts-ignore
+              video.title
+            }
+          </p>
+        </div>
+      ) : loading ? (
+        <p>Fetching</p>
+      ) : (
+        <p>No last Played</p>
+      )}
     </Card>
   )
 }
