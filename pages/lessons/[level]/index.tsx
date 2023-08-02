@@ -7,7 +7,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-export async function getStaticProps({ params }: any) {
+export async function getServerSideProps({ params }: any) {
   const videos = await getVideos(params.level)
   return {
     props: {
