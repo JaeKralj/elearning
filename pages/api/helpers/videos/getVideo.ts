@@ -6,7 +6,7 @@ export async function getVideo({
   videoId: string
 }) {
   const res = await fetch(
-    `/api/video?videoId=${videoId}&playlistId=${playlistId}`
+    `${process.env.NEXT_PUBLIC_ROOT_URL}/api/video?videoId=${videoId}&playlistId=${playlistId}`
   )
 
   if (!res.ok) {
