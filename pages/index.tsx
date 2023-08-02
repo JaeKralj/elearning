@@ -1,12 +1,9 @@
-import { useUser } from '@/components/AuthContext'
 import Card from '@/components/base/Card'
 import CustomFragment from '@/components/base/CustomFragment'
+import { useUser } from '@/contexts/AuthContext'
 import { getGreeting } from '@/utils/getGreeting'
-import { Akshar } from 'next/font/google'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-
-const akshar = Akshar({ subsets: ['latin'] })
 
 export default function Home() {
   const greeting = getGreeting()
@@ -55,17 +52,30 @@ export default function Home() {
   )
 }
 
+// TODO: add link to last lesson.
+// !NOTE: fix video object, add playlist id
 function LastPlayed() {
   // @ts-ignore
   const { user } = useUser()
+
   const [video, setVideo] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const fetchLastPlayed = async () => {
-    console.log(user)
+    setLoading(true)
     const res = await fetch(
-      'http://localhost:3000/api/last_played?uid=' + user?.uid
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/api/last_played?uid=` + user?.uid
     )
+    if (!res.ok && res.status !== 404) {
+      setLoading(false)
+      throw new Error("Couldn't get last played video")
+    }
+    if (res.status === 404) {
+      setVideo(null)
+      setLoading(false)
+    }
     setVideo(await res.json())
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -79,21 +89,28 @@ function LastPlayed() {
         // @ts-ignore
         src={video?.thumbnail?.url}
         // @ts-ignore
-        width={video?.thumbnail?.width}
+        // width={video?.thumbnail?.width}
+        width={640}
         // @ts-ignore
-        height={video?.thumbnail?.height}
+        height={480}
         sizes='(min-width: 768px) 20rem,'
         // @ts-ignore
         alt={video?.title}
       />
-      <div className='flex items-center justify-between'>
-        <p className='text-xs font-medium md:text-sm'>
-          {
-            // @ts-ignore
-            video?.title
-          }
-        </p>
-      </div>
+      {video && !loading ? (
+        <div className='flex items-center justify-between'>
+          <p className='text-xs font-medium md:text-sm'>
+            {
+              // @ts-ignore
+              video.title
+            }
+          </p>
+        </div>
+      ) : loading ? (
+        <p>Fetching</p>
+      ) : (
+        <p>No last Played</p>
+      )}
     </Card>
   )
 }

@@ -17,7 +17,6 @@ export default async function handler(
   if (docSnap.exists()) {
     return res.status(200).json(docSnap.data().videos)
   } else {
-    console.log('No such document!')
     return res.status(404).json('no videos found')
   }
 }

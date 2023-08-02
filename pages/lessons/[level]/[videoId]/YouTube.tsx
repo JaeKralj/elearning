@@ -1,4 +1,4 @@
-import { useUser } from '@/components/AuthContext'
+import { useUser } from '@/contexts/AuthContext'
 import YouTubePlayer, { YouTubeProps } from 'react-youtube'
 
 export default function YouTube({ videoId, playlistId }: propTypes) {

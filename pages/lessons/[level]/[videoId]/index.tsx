@@ -5,12 +5,10 @@ import Link from 'next/link'
 // import { getVideos } from '../page'
 import { getNextVideo } from '@/pages/api/helpers/videos/getNextVideo'
 import { getVideo } from '@/pages/api/helpers/videos/getVideo'
-import { getVideos } from '@/pages/api/helpers/videos/getVideos'
-import type { GetStaticPaths } from 'next'
 import { useRouter } from 'next/router'
 import YouTube from './YouTube'
 
-export async function getStaticProps({ params }: any) {
+export async function getServerSideProps({ params }: any) {
   const video = await getVideo({
     playlistId: params.level,
     videoId: params.videoId,
@@ -25,15 +23,6 @@ export async function getStaticProps({ params }: any) {
       nextVideo,
     },
   }
-}
-
-export const getStaticPaths: GetStaticPaths = async ({ context }: any) => {
-  // TODO: get levels from db
-  const videos = await getVideos('basic')
-  const paths = videos.map((video: any) => ({
-    params: { videoId: video.videoId, level: 'basic' },
-  }))
-  return { paths, fallback: false }
 }
 
 export default function Lessons({ video, nextVideo }: propTypes) {

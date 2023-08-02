@@ -1,13 +1,19 @@
 'use client'
-import { useUser } from '@/components/AuthContext'
 import Button from '@/components/base/Button'
 import Input from '@/components/shared/auth/Input'
+import { useUser } from '@/contexts/AuthContext'
 import { Formik, Form as FormikForm } from 'formik'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import * as Yup from 'yup'
 
-export default function Form({ heading, altText, endpoint }: propTypes) {
+export default function Form({
+  heading,
+  altText,
+  endpoint,
+  altLink,
+}: propTypes) {
   // @ts-ignore
   const { setUser } = useUser()
 
@@ -27,8 +33,7 @@ export default function Form({ heading, altText, endpoint }: propTypes) {
       throw new Error('Network response was not ok')
     }
     const user = await response.json()
-    if (user) localStorage.setItem('authId', user.uid)
-    setUser({ uid: user.uid })
+    if (user) setUser(JSON.stringify(user.uid))
     router.push('/')
   }
   const router = useRouter()
@@ -71,19 +76,21 @@ export default function Form({ heading, altText, endpoint }: propTypes) {
               >
                 Submit
               </Button>
-              <Button
+              {/* <Button
                 styleArr={['primary', 'outline']}
                 type='button'
                 name='SIGN_IN_WITH_GOOGLE'
               >
                 With Google
-              </Button>
+              </Button> */}
             </div>
             <p className='text-base mt-8 text-center mb-14'>
               {altText[0]}{' '}
-              <span className='text-xs font-semibold hover:text-primary-100 cursor-pointer transition ease-in-out'>
-                {altText[1]}
-              </span>
+              <Link href={altLink} className='py-3'>
+                <span className='text-xs font-semibold hover:text-primary-100 cursor-pointer transition ease-in-out'>
+                  {altText[1]}
+                </span>
+              </Link>
             </p>
           </FormikForm>
         </Formik>
@@ -97,6 +104,7 @@ type propTypes = {
   altText: [string, string]
   heading: string
   endpoint: string
+  altLink: string
 }
 
 interface FormVals {

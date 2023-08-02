@@ -1,11 +1,19 @@
 import Form from '@/components/shared/auth/Form'
+import { useEffect } from 'react'
 
 export default function Login({ setNav }: propTypes) {
-  setNav(false)
+  useEffect(() => {
+    setNav(false)
+    return setNav(true)
+  }, [])
   return (
     <Form
       heading='Login'
-      altText={["I don't have an account", 'Register']}
+      altText={[
+        'log in with testing3@test.com, password: test123 or',
+        'Register',
+      ]}
+      altLink='/signup'
       endpoint='/api/login'
     />
   )
