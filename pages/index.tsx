@@ -2,11 +2,8 @@ import Card from '@/components/base/Card'
 import CustomFragment from '@/components/base/CustomFragment'
 import { useUser } from '@/contexts/AuthContext'
 import { getGreeting } from '@/utils/getGreeting'
-import { Akshar } from 'next/font/google'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-
-const akshar = Akshar({ subsets: ['latin'] })
 
 export default function Home() {
   const greeting = getGreeting()
@@ -67,7 +64,7 @@ function LastPlayed() {
   const fetchLastPlayed = async () => {
     setLoading(true)
     const res = await fetch(
-      'http://localhost:3000/api/last_played?uid=' + user?.uid
+      `${process.env.NEXT_PUBLIC_ROOT_URL}/api/last_played?uid=` + user?.uid
     )
     if (!res.ok && res.status !== 404) {
       setLoading(false)

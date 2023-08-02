@@ -6,7 +6,7 @@ export async function getVideo({
   videoId: string
 }) {
   const res = await fetch(
-    `http://localhost:3000/api/video?videoId=${videoId}&playlistId=${playlistId}`
+    `/api/video?videoId=${videoId}&playlistId=${playlistId}`
   )
 
   if (!res.ok) {
