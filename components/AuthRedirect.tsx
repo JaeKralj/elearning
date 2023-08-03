@@ -10,6 +10,8 @@ export default function AuthRedirect() {
     // @ts-ignore
     if (!user.uid && pathname !== '/login' && pathname !== '/signup') {
       push('/login')
+    } else if (user.uid && (pathname === '/login' || pathname === '/signup')) {
+      push('/')
     }
   }, [])
   return <></>
