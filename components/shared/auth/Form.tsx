@@ -16,10 +16,12 @@ export default function Form({
 }: propTypes) {
   // @ts-ignore
   const { setUser } = useUser()
+  const [loading, setLoading] = useState(false)
 
   const [error, setError] = useState(null)
 
   const handleSubmit = async (values: FormVals) => {
+    setLoading(true)
     const options = {
       method: 'POST',
       headers: {
@@ -30,15 +32,20 @@ export default function Form({
     const response = await fetch(endpoint, options)
 
     if (!response.ok) {
+      setLoading(false)
       throw new Error('Network response was not ok')
     }
     const user = await response.json()
     if (user) setUser(JSON.stringify(user.uid))
+    setLoading(false)
     router.push('/')
   }
   const router = useRouter()
   return (
-    <main className='p-4 min-h-screen flex py-5 justify-center items-center flex-col'>
+    <main className='p-4 min-h-screen flex py-5 justify-center items-center flex-col relative'>
+      {loading && (
+        <div className='border-primary-100 border-4 aspect-square left-1/2 top-1/2 rounded-full absolute z-50 h-16 animate-ping' />
+      )}
       <div className='mt-14'>
         <h1 className='text-3xl font-semibold my-10'>{heading}</h1>
         <Formik
