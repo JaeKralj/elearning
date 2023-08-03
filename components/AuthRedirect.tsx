@@ -11,6 +11,6 @@ export default function AuthRedirect() {
     if (!user.uid && pathname !== '/login' && pathname !== '/signup') {
       push('/login')
     }
-  })
+  }, [])
   return <></>
 }
