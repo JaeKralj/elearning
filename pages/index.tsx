@@ -62,7 +62,7 @@ function LastPlayed() {
   const [loading, setLoading] = useState(false)
 
   const fetchLastPlayed = async () => {
-    if (!user.uid) return
+    if (!user?.uid) return
     setLoading(true)
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_ROOT_URL}/api/last_played?uid=` + user?.uid
@@ -86,7 +86,7 @@ function LastPlayed() {
   return (
     <Card className='!p-0 rounded-md w-[12.5rem]'>
       <h2 className='text-base font-medium my-2 '>Last Lesson</h2>
-      {user.uid ? (
+      {user?.uid ? (
         <Image
           // @ts-ignore
           src={video?.thumbnail?.url}
