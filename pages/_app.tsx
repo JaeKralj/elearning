@@ -1,4 +1,4 @@
-import AuthRedirect from '@/components/AuthRedirect'
+// import AuthRedirect from '@/components/AuthRedirect'
 import Navbar from '@/components/shared/misc/Navbar'
 import { UserProvider } from '@/contexts/AuthContext'
 import '@/styles/globals.css'
@@ -33,7 +33,7 @@ export default function App({
   }, [])
   return (
     <UserProvider>
-      <AuthRedirect />
+      {/* <AuthRedirect /> */}
       {isLoading && (
         <div className='border-primary-100 border-4 aspect-square left-1/2 top-1/2 rounded-full absolute z-50 h-16 animate-ping' />
       )}

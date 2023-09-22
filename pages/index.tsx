@@ -62,6 +62,7 @@ function LastPlayed() {
   const [loading, setLoading] = useState(false)
 
   const fetchLastPlayed = async () => {
+    if (!user.uid) return
     setLoading(true)
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_ROOT_URL}/api/last_played?uid=` + user?.uid
@@ -85,18 +86,22 @@ function LastPlayed() {
   return (
     <Card className='!p-0 rounded-md w-[12.5rem]'>
       <h2 className='text-base font-medium my-2 '>Last Lesson</h2>
-      <Image
-        // @ts-ignore
-        src={video?.thumbnail?.url}
-        // @ts-ignore
-        // width={video?.thumbnail?.width}
-        width={640}
-        // @ts-ignore
-        height={480}
-        sizes='(min-width: 768px) 20rem,'
-        // @ts-ignore
-        alt={video?.title}
-      />
+      {user.uid ? (
+        <Image
+          // @ts-ignore
+          src={video?.thumbnail?.url}
+          // @ts-ignore
+          // width={video?.thumbnail?.width}
+          width={640}
+          // @ts-ignore
+          height={480}
+          sizes='(min-width: 768px) 20rem,'
+          // @ts-ignore
+          alt={video?.title}
+        />
+      ) : (
+        <div className='w-[40rem] md:w-[20rem]'></div>
+      )}
       {video && !loading ? (
         <div className='flex items-center justify-between'>
           <p className='text-xs font-medium md:text-sm'>
@@ -109,7 +114,7 @@ function LastPlayed() {
       ) : loading ? (
         <p>Fetching</p>
       ) : (
-        <p>No last Played</p>
+        <p>No last Played For You</p>
       )}
     </Card>
   )
